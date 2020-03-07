@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Yaurl Django</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 <h1>Welcome</h1>
 
+{% if user.is_authenticated %}
 <form action="{% url 'add' %}" method="post">
     {% csrf_token %}
     {{ shorted_url_form }}
     <input type="submit" value="Short it!">
 </form>
+{% endif %}
 
 <h3>Available shorts:</h3>
 <table style="width: 40%;">
@@ -20,6 +18,7 @@
         <th>Original URL</th>
         <th>Redirects</th>
         <th>Created At</th>
+        <th>Author</th>
     </tr>
     </thead>
     <tbody>
@@ -28,9 +27,9 @@
         <td><a href="{% url 'redirect' shorted_url.id %}">{{ shorted_url.original_url }}</a></td>
         <td>{{ shorted_url.redirects }}</td>
         <td>{{ shorted_url.created_at }}</td>
+        <td>{{ shorted_url.user.get_username }}</td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
-</body>
-</html>
+{% endblock %}

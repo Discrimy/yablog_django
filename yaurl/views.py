@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
@@ -20,12 +21,14 @@ def index(req):
     })
 
 
+@login_required()
 def add(req):
     form = ShortedUrlForm(req.POST)
     if form.is_valid():
         new_shorted_url = ShortedUrl(
             original_url=form.cleaned_data['original_url'],
-            created_at=datetime.datetime.now())
+            created_at=datetime.datetime.now(),
+            user=req.user)
         new_shorted_url.save()
     return redirect(reverse('index'))
 
