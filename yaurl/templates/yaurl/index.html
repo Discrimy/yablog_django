@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yaurl Django</title>
+</head>
+<body>
+<h1>Welcome</h1>
+
+<form action="{% url 'add' %}" method="post">
+    {% csrf_token %}
+    {{ shorted_url_form }}
+    <input type="submit" value="Short it!">
+</form>
+
+<h3>Available shorts:</h3>
+<table style="width: 40%;">
+    <thead>
+    <tr>
+        <th>Original URL</th>
+        <th>Redirects</th>
+        <th>Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for shorted_url in shorted_urls %}
+    <tr>
+        <td><a href="{% url 'redirect' shorted_url.id %}">{{ shorted_url.original_url }}</a></td>
+        <td>{{ shorted_url.redirects }}</td>
+        <td>{{ shorted_url.created_at }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
