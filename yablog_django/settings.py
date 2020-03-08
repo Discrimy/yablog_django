@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import re
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -72,11 +73,16 @@ WSGI_APPLICATION = 'yablog_django.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
+user, password, host, database = re.match(r'mysql://(.*?):(.*?)@(.*?)/(.*?)\?reconnect=true', os.environ['CLEARDB_DATABASE_URL']).groups()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': database,
+        'HOST': host,
+        'USER': user,
+        'PASSWORD': password,
     }
 }
 
