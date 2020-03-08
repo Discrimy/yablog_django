@@ -1,11 +1,10 @@
-import datetime
-
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.urls import reverse
+from django.utils import timezone
 
 from yaurl.forms import ShortedUrlForm, RemoveShortedUrlForm
 from yaurl.models import ShortedUrl
@@ -28,7 +27,7 @@ def add(req):
     if form.is_valid():
         new_shorted_url = ShortedUrl(
             original_url=form.cleaned_data['original_url'],
-            created_at=datetime.datetime.now(),
+            created_at=timezone.now(),
             user=req.user)
         new_shorted_url.save()
     return redirect(reverse('index'))
