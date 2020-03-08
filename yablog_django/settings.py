@@ -29,7 +29,9 @@ SECRET_KEY = '(4k$5x)n^sne=n7n3hp1g5l(!2=v(mwc8hjtdvvwk!uup@4$+)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'yablog-django.herokuapp.com'
+]
 
 # Application definition
 
