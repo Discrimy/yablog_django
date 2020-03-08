@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ user.get_username }} Profile</h1>
+
+<h3>Your shorts:</h3>
+<table style="width: 40%;">
+    <thead>
+    <tr>
+        <th>Original URL</th>
+        <th>Redirects</th>
+        <th>Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for shorted_url in user.shortedurl_set.all %}
+    <tr>
+        <td><a href="{% url 'redirect' shorted_url.id %}">{{ shorted_url.original_url }}</a></td>
+        <td>{{ shorted_url.redirects }}</td>
+        <td>{{ shorted_url.created_at }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
