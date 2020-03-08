@@ -2,11 +2,12 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 # Create your views here.
 from django.urls import reverse
 
-from yaurl.forms import ShortedUrlForm
+from yaurl.forms import ShortedUrlForm, RemoveShortedUrlForm
 from yaurl.models import ShortedUrl
 
 
@@ -31,6 +32,17 @@ def add(req):
             user=req.user)
         new_shorted_url.save()
     return redirect(reverse('index'))
+
+
+@login_required()
+def remove(req):
+    form = RemoveShortedUrlForm(req.POST)
+    if form.is_valid():
+        short = get_object_or_404(ShortedUrl, pk=form.cleaned_data['shorted_id'])
+        if short.user != req.user:
+            return HttpResponseForbidden('!')
+        short.delete()
+    return redirect(reverse('profile'))
 
 
 def shorted_url_redirect(req, shorted_id):
