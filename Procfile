@@ -1,0 +1,1 @@
+web: gunicorn yablog_django.wsgi --log-file -
