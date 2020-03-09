@@ -14,9 +14,6 @@
                 "--noreload"
             ],
             "django": true,
-            "env": {
-                "CLEARDB_DATABASE_URL": "mysql://b03c5bf3811146:299c5426@eu-cdbr-west-02.cleardb.net/heroku_f10f4eff11b5ab3?reconnect=true"
-            }
         }
     ]
 }

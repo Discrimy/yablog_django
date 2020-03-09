@@ -255,4 +255,3 @@ modules.xml
 # End of https://www.gitignore.io/api/django,python,pycharm+all
 
 /db.sqlite3
-/venv/
