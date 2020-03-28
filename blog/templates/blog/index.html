@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Posts</h2>
+
+{% if user.is_authenticated %}
+<h2>New Post</h2>
+<form action="{% url 'blog-new-post' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+{% endif %}
+
+<ul>
+    {% for post in posts %}
+    <li>{{ post.author.username }} - <a href="{% url 'blog-post' post.id %}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

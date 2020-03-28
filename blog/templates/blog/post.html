@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Post</h2>
+
+<h3>{{ post.title }}</h3>
+<h4>{{ post.author }}</h4>
+<p>{{ post.content }}</p>
+
+<h2>Comments</h2>
+{% if user.is_authenticated %}
+<form action="{% url 'blog-new-comment' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+{% endif %}
+<ul>
+    {% for comment in post.comment_set.all %}
+    <li>{{ comment.author.username }} - {{ comment.content }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

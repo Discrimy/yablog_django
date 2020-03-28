@@ -25,6 +25,7 @@ STATIC_URL = '/static/'
 # Application definition
 
 INSTALLED_APPS = [
+    'blog',
     'users',
     'yaurl',
     'django.contrib.admin',
