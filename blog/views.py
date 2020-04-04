@@ -24,6 +24,9 @@ class PostView(FormMixin, DetailView):
 
     form_class = CommentForm
 
+    def get_initial(self):
+        return {'post': self.kwargs['pk']}
+
 
 class NewPostView(LoginRequiredMixin, FormView):
     form_class = PostForm

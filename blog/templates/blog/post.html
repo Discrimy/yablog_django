@@ -5,6 +5,7 @@
 <h2>Post</h2>
 
 <h3>{{ post.title }}</h3>
+<h3>{{ post.created_at }}</h3>
 <h4>{{ post.author }}</h4>
 <p>{{ post.content }}</p>
 
@@ -18,7 +19,7 @@
 {% endif %}
 <ul>
     {% for comment in post.comment_set.all %}
-    <li>{{ comment.author.username }} - {{ comment.content }}</li>
+    <li>{{ comment.author.username }} - {{ comment.content }} ({{ comment.created_at }})</li>
     {% endfor %}
 </ul>
 
