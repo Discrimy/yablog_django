@@ -10,3 +10,6 @@ class ShortedUrl(models.Model):
     created_at = models.DateTimeField('Created At')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.original_url
