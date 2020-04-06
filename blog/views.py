@@ -1,3 +1,4 @@
+import markdown
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 # Create your views here.
@@ -23,6 +24,12 @@ class PostView(FormMixin, DetailView):
     model = Post
 
     form_class = CommentForm
+
+    def get_object(self, queryset=None):
+        # Render post's content as Markdown to HTML and replace it
+        post: Post = super(PostView, self).get_object(queryset=queryset)
+        post.content = markdown.markdown(post.content)
+        return post
 
     def get_initial(self):
         return {'post': self.kwargs['pk']}
