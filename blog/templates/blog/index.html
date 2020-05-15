@@ -1,22 +1,67 @@
 {% extends 'base.html' %}
 
-{% block content %}
+<!doctype html>
+<html lang="en">
 
-<h2>Posts</h2>
+<head>
+    <title>Yablog</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% if user.is_authenticated %}
-<h2>New Post</h2>
-<form action="{% url 'blog-new-post' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
-{% endif %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<ul>
-    {% for post in posts %}
-    <li>{{ post.author.username }} - <a href="{% url 'blog-post' post.id %}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
+    <style>
+        .text-limited {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+    </style>
+</head>
 
-{% endblock %}
+<body>
+    {% block 'content' %}
+
+    <div class="container">
+        <h2>Posts</h2>
+        <div class="posts">
+            {% for post in posts %}
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><a href="{% url 'blog-post' post.id %}">{{post.title}}</a></h4>
+                    <p class="card-text">
+                        {% comment %} <a class="text-muted" href="{% url 'profile' post.author.id %}"> {% endcomment %}
+                            {{post.author.username}}
+                        {% comment %} </a> {% endcomment %}
+                    </p>
+                    <p class="card-text text-limited">{{post.content}}</p>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

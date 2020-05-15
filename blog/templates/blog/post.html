@@ -1,26 +1,59 @@
 {% extends 'base.html' %}
 
-{% block content %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Yablog</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<h2>Post</h2>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    {% block 'content' %}  
+    
+    <div class="container">
+        <h2>Post</h2>
+        <div class="post">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{post.title}}</h4>
+                    <p class="card-text">
+                        {% comment %} <a class="text-muted" href="{% url 'profile' post.author.id %}"> {% endcomment %}
+                            {{post.author.username}}
+                        {% comment %} </a> {% endcomment %}
+                    </p>
+                    <p class="card-text">{{post.content}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comments">
+            {% for comment in post.comments %}
 
-<h3>{{ post.title }}</h3>
-<h3>{{ post.created_at }}</h3>
-<h4>{{ post.author }}</h4>
-<div>{{ post.content|safe }}</div>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">
+                        <a class="text-muted" href="{% url 'profile' comment.author.id %}">
+                            {{comment.author.username}}
+                        </a>
+                    </p>
+                    <p class="card-text">{{comment.content}}</p>
+                </div>
+            </div>
 
-<h2>Comments</h2>
-{% if user.is_authenticated %}
-<form action="{% url 'blog-new-comment' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
-{% endif %}
-<ul>
-    {% for comment in post.comment_set.all %}
-    <li>{{ comment.author.username }} - {{ comment.content }} ({{ comment.created_at }})</li>
-    {% endfor %}
-</ul>
+            {% endfor %}
+        </div>
+    </div>
 
-{% endblock %}
+    {% endblock %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

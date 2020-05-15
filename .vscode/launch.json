@@ -13,6 +13,9 @@
                 "runserver",
                 "--noreload"
             ],
+            "env": {
+                "DJANGO_DEV": "True",
+            },
             "django": true,
         }
     ]
