@@ -36,6 +36,7 @@ class PostView(FormMixin, DetailView):
 
 
 class NewPostView(LoginRequiredMixin, FormView):
+    template_name = 'blog/new_post.html'
     form_class = PostForm
 
     def form_valid(self, form):

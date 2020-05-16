@@ -16,26 +16,14 @@
         {% endif %}
 
         <div class="form-group">
-            {% if form.username.errors %}
-            {% for error in form.username.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-            {% endif %}
+            {% include 'form_error.html' with field=form.username %}
 
             <label for="{{ form.username.id_for_label }}">Username</label>
             <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" aria-describedby="username" placeholder="Alex">
             <small id="username" class="form-text text-muted">Your username</small>
         </div>
         <div class="form-group">
-            {% if form.password.errors %}
-            {% for error in form.password.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-            {% endif %}
+            {% include 'form_error.html' with field=form.password %}
 
             <label for="{{ form.password.id_for_label }}">Password</label>
             <input type="password" class="form-control" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" placeholder="1234">
