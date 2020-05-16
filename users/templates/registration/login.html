@@ -1,12 +1,47 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>Login</h1>
+{% block 'content' %}
 
-<form action="{% url 'login' %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Login</button>
-</form>
+<div class="container mt-4">
+    <form action="{% url 'login' %}" method="post">
+        <h2>Login form</h2>
+        {% csrf_token %}
+
+        {% if form.errors %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="form-group">
+            {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+            {% endif %}
+
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" aria-describedby="username" placeholder="Alex">
+            <small id="username" class="form-text text-muted">Your username</small>
+        </div>
+        <div class="form-group">
+            {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+            {% endif %}
+
+            <label for="{{ form.password.id_for_label }}">Password</label>
+            <input type="password" class="form-control" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" placeholder="1234">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
 {% endblock %}

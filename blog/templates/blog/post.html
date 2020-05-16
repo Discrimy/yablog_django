@@ -30,10 +30,37 @@
             </div>
         </div>
         
-        <div class="comments">
-            {% for comment in post.comments %}
+        <div class="comments container mt-4">
+            <h4>Comment section</h4>
 
-            <div class="card">
+            {% if user.is_authenticated %}
+
+            <form action="{% url 'blog-new-comment' %}" method="post" id="new-comment">
+                {% csrf_token %}
+                {{ form.post }}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <a class="text-muted" href="{% url 'profile' user.id %}">
+                                {{ user.username }}
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <div class="form-group">
+                              <label for="{{ form.content.id_for_label }}">Comment</label>
+                              <textarea class="form-control" name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" rows="4"></textarea>
+                            </div>
+                        </p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            {% endif %}
+
+            {% for comment in post.comment_set.all %}
+
+            <div class="card mt-2">
                 <div class="card-body">
                     <p class="card-text">
                         <a class="text-muted" href="{% url 'profile' comment.author.id %}">
