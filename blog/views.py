@@ -1,13 +1,12 @@
-import markdown
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 # Create your views here.
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import DetailView, FormView, ListView
 from django.views.generic.edit import FormMixin
 
-from blog.forms import PostForm, CommentForm
-from blog.models import Post, Comment
+from blog.forms import CommentForm, PostForm
+from blog.models import Comment, Post
 
 
 class IndexView(FormMixin, ListView):
@@ -24,12 +23,6 @@ class PostView(FormMixin, DetailView):
     model = Post
 
     form_class = CommentForm
-
-    def get_object(self, queryset=None):
-        # Render post's content as Markdown to HTML and replace it
-        post: Post = super(PostView, self).get_object(queryset=queryset)
-        post.content = markdown.markdown(post.content)
-        return post
 
     def get_initial(self):
         return {'post': self.kwargs['pk']}

@@ -256,3 +256,6 @@ modules.xml
 
 /db.sqlite3
 /venv/
+
+# .env stores development only config, use OS's env vars in production
+.env

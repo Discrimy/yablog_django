@@ -12,12 +12,25 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import dsnparse
+
+from dotenv import load_dotenv
+
+# Load config from .env file if exists
+load_dotenv()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = bool(os.environ.get('DEBUG', False))
+
+SECRET_KEY = os.environ['SECRET_KEY'] if not DEBUG else 'dev secret'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -67,23 +80,52 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'yablog_django.wsgi.application'
 
+ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS.extend([
+        'yablog-django.herokuapp.com',
+        '*'
+    ])
+
+
+DATABASES = {}
+if DEBUG:
+    DATABASES.update({'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }})
+else:
+    dsn = dsnparse.parse(os.environ['CLEARDB_DATABASE_URL'])
+    DATABASES.update({
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': dsn.database,
+            'HOST': dsn.host,
+            'USER': dsn.username,
+            'PASSWORD': dsn.password,
+        }
+    })
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
+AUTH_PASSWORD_VALIDATORS = []
+if not DEBUG:
+    AUTH_PASSWORD_VALIDATORS.extend([
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+    ])
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/yaurl'
