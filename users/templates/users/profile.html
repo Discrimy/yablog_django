@@ -1,41 +1,67 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>{{ user.get_username }} Profile</h1>
+<!doctype html>
+<html lang="en">
 
-<h3>Your shorts:</h3>
-<table style="width: 40%;">
-    <thead>
-    <tr>
-        <th>Original URL</th>
-        <th>Redirects</th>
-        <th>Created At</th>
-        <th>Remove</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for shorted_url in user.shortedurl_set.all %}
-    <tr>
-        <td><a href="{% url 'redirect' shorted_url.id %}">{{ shorted_url.original_url }}</a></td>
-        <td>{{ shorted_url.redirects }}</td>
-        <td>{{ shorted_url.created_at }}</td>
-        <td>
-            <form action="{% url 'remove' %}" method="post">
-                {% csrf_token %}
-                <input id="shorted_id" name="shorted_id" type="hidden" value="{{ shorted_url.id }}">
-                <button type="submit">Remove</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+<head>
+    <title>Yablog</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<h2>Posts:</h2>
-<ul>
-    {% for post in user.post_set.all %}
-    <li><a href="{% url 'blog-post' post.id %}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-{% endblock %}
+    <style>
+        .text-limited {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+    </style>
+</head>
+
+<body>
+    {% block 'content' %}
+
+    <div class="container">
+        <h2>Posts of {{user.username}}</h2>
+        <div class="posts">
+            {% for post in user.post_set.all %}
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><a href="{% url 'blog-post' post.id %}">{{post.title}}</a></h4>
+                    <p class="card-text">
+                        <a class="text-muted" href="{% url 'profile' post.author.id %}">
+                            {{post.author.username}}
+                        </a>
+                    </p>
+                    <p class="card-text text-limited">{{post.content}}</p>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

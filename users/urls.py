@@ -4,5 +4,5 @@ from users.views import ProfileView
 
 urlpatterns = [
     path('registration/', include('django.contrib.auth.urls')),
-    path('profile/', ProfileView.as_view(), name='profile'),
+    path('<int:pk>/profile', ProfileView.as_view(), name='profile'),
 ]

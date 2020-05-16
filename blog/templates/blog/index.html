@@ -37,9 +37,9 @@
                 <div class="card-body">
                     <h4 class="card-title"><a href="{% url 'blog-post' post.id %}">{{post.title}}</a></h4>
                     <p class="card-text">
-                        {% comment %} <a class="text-muted" href="{% url 'profile' post.author.id %}"> {% endcomment %}
+                        <a class="text-muted" href="{% url 'profile' post.author.id %}">
                             {{post.author.username}}
-                        {% comment %} </a> {% endcomment %}
+                        </a>
                     </p>
                     <p class="card-text text-limited">{{post.content}}</p>
                 </div>
