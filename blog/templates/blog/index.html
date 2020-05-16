@@ -28,25 +28,9 @@
 <body>
     {% block 'content' %}
 
-    <div class="container">
+    <div class="container mt-4">
         <h2>Posts</h2>
-        <div class="posts">
-            {% for post in posts %}
-
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><a href="{% url 'blog-post' post.id %}">{{post.title}}</a></h4>
-                    <p class="card-text">
-                        <a class="text-muted" href="{% url 'profile' post.author.id %}">
-                            {{post.author.username}}
-                        </a>
-                    </p>
-                    <p class="card-text text-limited">{{post.content}}</p>
-                </div>
-            </div>
-
-            {% endfor %}
-        </div>
+        {% include 'blog/post_list.html' with posts=posts %}
     </div>
 
     {% endblock %}
