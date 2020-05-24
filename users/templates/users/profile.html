@@ -30,7 +30,7 @@
 
     <div class="container mt-4">
         <h2>Posts of {{user.username}}</h2>
-        {% include 'blog/post_list.html' with posts=user.post_set.all %}
+        {% include 'blog/post_list.html' with posts_page=page_obj %}
     </div>
 
     {% endblock %}

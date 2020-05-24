@@ -11,11 +11,10 @@ from blog.models import Comment, Post
 
 class IndexView(FormMixin, ListView):
     template_name = 'blog/index.html'
-    context_object_name = 'posts'
-    form_class = PostForm
+    paginate_by = 2
+    model = Post
 
-    def get_queryset(self):
-        return Post.objects.all()
+    form_class = PostForm
 
 
 class PostView(FormMixin, DetailView):

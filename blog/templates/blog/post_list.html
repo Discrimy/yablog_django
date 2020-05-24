@@ -1,5 +1,5 @@
 <div class="posts">
-    {% for post in posts %}
+    {% for post in posts_page %}
 
     <div class="card mt-2">
         <div class="card-body">
@@ -14,4 +14,6 @@
     </div>
 
     {% endfor %}
+
+    {% include 'blog/pager.html' with page=posts_page %}
 </div>
